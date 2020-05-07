@@ -1,7 +1,8 @@
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
 ---
 last.updated: 5/7/2020
 ---
-
 
 # Create-TestVMs
 Documentation for the Create-TestVMs PowerShell script available in the [PowerShell Gallery](https://www.powershellgallery.com/packages/Create-TestVMs/1.3).
