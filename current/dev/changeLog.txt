@@ -1,0 +1,4 @@
+Configured script to use/set the default hyper-v VM storage locations.
+Changed PowerShell console title to reflect version of script being run.
+
+does the script change the hyper-v locations before the pause to execute?
