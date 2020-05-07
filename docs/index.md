@@ -1,3 +1,8 @@
+---
+last.Updated: 5/7/2020
+---
+
+
 # Create-TestVMs
 Archive repo and documentation for the Create-TestVMs PowerShell script available in the PowerShell Repository.
 
@@ -25,3 +30,14 @@ You can accept or modify the default values when prompted as the script runs.
 To modify the default values used by the script, edit the default parameter settings at the top of the script. If you installed the script using the **Install-Script Create-TestVMs** PowerShell command, the script can be found at *$env:ProgramFiles\WindowsPowerShell\Scripts*.
 
 Feedback or suggestions for improvements? Find me on Twitter [@jeffgilb](https://twitter.com/jeffgilb). 
+
+<details>
+  <summary>Release notes</summary>
+  The current version of the script is 1.3.
+
+  ### Version 1.0
+  * Original published version.
+  ### Versions 1.1 - Version 1.3
+  * Minor bug fixes.
+
+</details>
