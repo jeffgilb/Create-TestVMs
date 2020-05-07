@@ -34,9 +34,7 @@ Feedback or suggestions for improvements? Find me on Twitter [@jeffgilb](https:/
 ## The current version of the script is 1.3.
 Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/Create-TestVMs/1.3) by running the *Install-Script Create-TestVMs* command.
 
-## Release notes
-
-# A collapsible section with markdown
+# Release notes
 <details>
   <summary>Click to expand!</summary>
   
