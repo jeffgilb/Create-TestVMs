@@ -4,7 +4,7 @@ last.Updated: 5/7/2020
 
 
 # Create-TestVMs
-Archive repo and documentation for the Create-TestVMs PowerShell script available in the PowerShell Repository.
+Documentation for the Create-TestVMs PowerShell script available in the [PowerShell Gallery](https://www.powershellgallery.com/packages/Create-TestVMs/1.3).
 
 This script was created to help automate the creation of Hyper-V VMs for Windows Autopilot testing. However, the script will create Hyper-V VMs for any purpose you need. Run the script with administrative privileges on your Hyper-V host machine.
 
@@ -31,12 +31,25 @@ To modify the default values used by the script, edit the default parameter sett
 
 Feedback or suggestions for improvements? Find me on Twitter [@jeffgilb](https://twitter.com/jeffgilb). 
 
-The current version of the script is 1.3.
+## The current version of the script is 1.3.
+Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/Create-TestVMs/1.3) by running the *Install-Script Create-TestVMs* command.
 
+## Release notes
 <details>
-  <summary>Release notes</summary>
+  <summary>Version 1 Release notes</summary>
+
   ### Version 1.0
   * Original published version.
   ### Versions 1.1 - Version 1.3
   * Minor bug fixes.
+</details>
+
+<details>
+  <summary>In development</summary>
+
+  ### Coming in v2:
+  * Version displayed in PowerShell console title
+  * Ability to use and set the Hyper-V host's default VM storage settings instead of Hyper-V defaults
+  * Ability to use custom VHDX files with differencing disks
+  * Ability create VMs without a network connection
 </details>
