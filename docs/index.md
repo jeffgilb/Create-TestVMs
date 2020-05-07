@@ -1,5 +1,5 @@
 ---
-last.Updated: 5/7/2020
+last.updated: 5/7/2020
 ---
 
 
@@ -37,55 +37,24 @@ Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/
 # Release notes
 <details>
   <summary>Version 1</summary>
-  
-  v1.0: Initial release<br><br>
-  v1.1: Minor bug fixes<br><br>
-  v1.2: Minor bug fixes<br><br>
-  v1.3: Minor bug fixes<br><br>
-</details>
-
-# Release notes
-<details>
-  <summary>Version 1</summary>
-
-<ul style="list-style-type:disc;">
-  <li>Coffee</li>
-  <li>Tea</li>
-  <li>Milk</li>
-</ul>
-</details>
-
-# Release notes
-<details>
-  <summary>Version 1</summary>
 
 <dl>
   <dt>v1.0</dt>
-  <dd>• black hot drink<br>• blah blah.</dd>
+  <dd>Initial release</dd>
   <dt>v1.1</dt>
-  <dd> white cold drink</dd>
-</dl>
+  <dd> Minor bug fixes</dd>
+  <dt>v1.2</dt>
+  <dd> Minor bug fixes</dd>
+  <dt>v1.3</dt>
+  <dd> Minor bug fixes</dd>
+  </dl>
 </details>
-
-<!--
 
 <details>
-  <summary>Version 1 Release notes</summary>
+  <summary>Version 2</summary>
 
-### Version 1.0
-
-* Original published version.
-
-### Versions 1.1 - Version 1.3
-
-* Minor bug fixes.
-
-### Coming in v2
-
-* Version displayed in PowerShell console title
-* Ability to use and set the Hyper-V host's default VM storage settings instead of Hyper-V defaults
-* Ability to use custom VHDX files with differencing disks
-* Ability create VMs without a network connection
-
+<dl>
+  <dt>In development:</dt>
+  <dd>• Version displayed in PowerShell console title<br>• Ability to use and set the Hyper-V host's default VM storage settings instead of Hyper-V defaults<br>• Ability to use custom VHDX files with differencing disks<br>• Ability create VMs without a network connection</dd>
+</dl>
 </details>
--->
