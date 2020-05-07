@@ -1,18 +1,17 @@
----
-last.updated: 5/7/2020
----
-
 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
 # Create-TestVMs
+
 Documentation for the Create-TestVMs PowerShell script available in the [PowerShell Gallery](https://www.powershellgallery.com/packages/Create-TestVMs/1.3).
 
 This script was created to help automate the creation of Hyper-V VMs for Windows Autopilot testing. However, the script will create Hyper-V VMs for any purpose you need. Run the script with administrative privileges on your Hyper-V host machine.
 
 ## What it does
+
 When the script is run, it will prompt you for the VM settings necessary to create a Hyper-V VM. It will then create, and start, as many VMs as you ask for using the provided naming prefix to begin the VM name. If you do not change the default values at the top of the script, it will create and start a VM named Autopilot-*999*, where *999* is a three digit random number, with 2GB of RAM and the VM config files and hard disks stored in the Hyper-V default locations. 
 
 ## Default values
+
 If you do not modify the defaults when prompted when the script runs, the following default values will be used:
 
 |Parameter|Default value|Description|
