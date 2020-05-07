@@ -34,22 +34,28 @@ Feedback or suggestions for improvements? Find me on Twitter [@jeffgilb](https:/
 ## The current version of the script is 1.3.
 Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/Create-TestVMs/1.3) by running the *Install-Script Create-TestVMs* command.
 
-## Release notes
+# Release notes
 <details>
   <summary>Version 1 Release notes</summary>
 
-  ### Version 1.0
-  * Original published version.
-  ### Versions 1.1 - Version 1.3
-  * Minor bug fixes.
+### Version 1.0
+
+* Original published version.
+
+### Versions 1.1 - Version 1.3
+
+* Minor bug fixes.
+
 </details>
 
 <details>
   <summary>In development</summary>
 
-  ### Coming in v2:
-  * Version displayed in PowerShell console title
-  * Ability to use and set the Hyper-V host's default VM storage settings instead of Hyper-V defaults
-  * Ability to use custom VHDX files with differencing disks
-  * Ability create VMs without a network connection
+### Coming in v2
+
+* Version displayed in PowerShell console title
+* Ability to use and set the Hyper-V host's default VM storage settings instead of Hyper-V defaults
+* Ability to use custom VHDX files with differencing disks
+* Ability create VMs without a network connection
+
 </details>
