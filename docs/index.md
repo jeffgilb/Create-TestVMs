@@ -38,10 +38,21 @@ Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/
 <details>
   <summary>Version 1</summary>
   
-  * Version 1.0: Initial release<br>
-  * Version 1.1: Minor bug fixes<br>
-  * Version 1.2: Minor bug fixes<br>
-  * Version 1.3: Minor bug fixes<br>
+  v1.0: Initial release<br><br>
+  v1.1: Minor bug fixes<br><br>
+  v1.2: Minor bug fixes<br><br>
+  v1.3: Minor bug fixes<br><br>
+</details>
+
+
+# Release notes
+<details>
+  <summary>Version 1</summary>
+<ul style="list-style-type:bullet">
+  <li>Coffee</li>
+  <li>Tea</li>
+  <li>Milk</li>
+</ul>
 </details>
 
 <!--
