@@ -44,15 +44,27 @@ Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/
   v1.3: Minor bug fixes<br><br>
 </details>
 
-
 # Release notes
 <details>
   <summary>Version 1</summary>
-<ul style="list-style-type:bullet">
+
+<ul>
   <li>Coffee</li>
   <li>Tea</li>
   <li>Milk</li>
 </ul>
+</details>
+
+# Release notes
+<details>
+  <summary>Version 1</summary>
+
+<dl>
+  <dt>Coffee</dt>
+  <dd>- black hot drink</dd>
+  <dt>Milk</dt>
+  <dd>- white cold drink</dd>
+</dl>
 </details>
 
 <!--
