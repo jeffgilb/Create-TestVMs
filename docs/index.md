@@ -31,13 +31,12 @@ To modify the default values used by the script, edit the default parameter sett
 
 Feedback or suggestions for improvements? Find me on Twitter [@jeffgilb](https://twitter.com/jeffgilb). 
 
+The current version of the script is 1.3.
+
 <details>
   <summary>Release notes</summary>
-  The current version of the script is 1.3.
-
   ### Version 1.0
   * Original published version.
   ### Versions 1.1 - Version 1.3
   * Minor bug fixes.
-
 </details>
