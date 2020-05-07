@@ -35,6 +35,20 @@ Feedback or suggestions for improvements? Find me on Twitter [@jeffgilb](https:/
 Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/Create-TestVMs/1.3) by running the *Install-Script Create-TestVMs* command.
 
 ## Release notes
+
+# A collapsible section with markdown
+<details>
+  <summary>Click to expand!</summary>
+  
+  ## Heading
+  1. A numbered
+  2. list
+     * With some
+     * Sub bullets
+</details>
+
+<!--
+
 <details>
   <summary>Version 1 Release notes</summary>
 
@@ -54,3 +68,4 @@ Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/
 * Ability create VMs without a network connection
 
 </details>
+-->
