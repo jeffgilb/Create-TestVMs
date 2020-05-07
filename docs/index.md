@@ -36,13 +36,12 @@ Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/
 
 # Release notes
 <details>
-  <summary>Click to expand!</summary>
+  <summary>Version 1</summary>
   
-  ## Heading
-  1. A numbered
-  2. list
-     * With some
-     * Sub bullets
+  * Version 1.0: Initial release<br>
+  * Version 1.1: Minor bug fixes<br>
+  * Version 1.2: Minor bug fixes<br>
+  * Version 1.3: Minor bug fixes<br>
 </details>
 
 <!--
