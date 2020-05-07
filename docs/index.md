@@ -48,7 +48,7 @@ Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/
 <details>
   <summary>Version 1</summary>
 
-<ul>
+<ul style="list-style-type:disc;">
   <li>Coffee</li>
   <li>Tea</li>
   <li>Milk</li>
@@ -60,10 +60,10 @@ Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/
   <summary>Version 1</summary>
 
 <dl>
-  <dt>Coffee</dt>
-  <dd>- black hot drink</dd>
-  <dt>Milk</dt>
-  <dd>- white cold drink</dd>
+  <dt>v1.0</dt>
+  <dd>• black hot drink<br>• blah blah.</dd>
+  <dt>v1.1</dt>
+  <dd> white cold drink</dd>
 </dl>
 </details>
 
