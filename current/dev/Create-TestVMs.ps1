@@ -43,7 +43,8 @@ Version 2.0: Configured script to use/set the default Hyper-V VM storage locatio
 param(
     [Parameter(Mandatory=$False)] [String] $VMPath = "C:\ProgramData\Microsoft\Windows\Hyper-V\",
     [Parameter(Mandatory=$False)] [String] $HDPath = "C:\Users\Public\Documents\Hyper-V\Virtual Hard Disks\",
-    [Parameter(Mandatory=$False)] [Int] $RAM = 2, # 2GB = 2*1073741824
+    [Parameter(Mandatory=$False)] [String] $vhdx = "",
+	[Parameter(Mandatory=$False)] [Int]    $RAM = 2, # 2GB = 2*1073741824
     [Parameter(Mandatory=$False)] [String] $VMSwitch = "Default Switch",
     [Parameter(Mandatory=$False)] [String] $ISO = "",
     [Parameter(Mandatory=$False)] [String] $VMPrefix = "Autopilot",
@@ -81,8 +82,20 @@ Function Get-File
     $file = $fileBrowser.FileName;
     return $file
 }
-# get-vmhost | Select-Object -Property *
-# get-vmhost | Select-Object -Property VirtualHardDiskPath
+
+Function Get-VHDX
+{
+    write-host -ForegroundColor Red -BackgroundColor Yellow  "`n    * * * Dialog box may be hidden behind this, or another, window! * * *     `n" 
+    $vhdx = ""
+    Add-Type -AssemblyName System.Windows.Forms
+    $fileBrowser = New-Object System.Windows.Forms.OpenFileDialog -Property @{
+        Multiselect = $false # Multiple files can be chosen
+	    Filter = 'VHDX Files (*.VHDX)|*.VHDX' # Specified file types
+        }
+    [void]$fileBrowser.ShowDialog()
+    $vhdx = $fileBrowser.FileName;
+    return $vhdx
+}
 
 $Version = "Create-TestVMs v2.0"
 $host.ui.RawUI.WindowTitle = $Version
@@ -110,7 +123,6 @@ $hdpath = $hdpath.trimStart("=")
 $hdpath = $hdpath.trimend("\})""")
 
 write-host "The Hyper-V host machine is set to store VMs at these default locations:`n" 
-# Get-VMHost -Computername . | Format-list VirtualMachinePath,VirtualHardDiskPath
 write-host -ForeGroundColor Green "`tVM configuration files:`t" $vmpath"`n`n`tVM hard disk files:`t $HDpath"`n""
 
 write-host -ForeGroundColor Yellow "Do you want to use the default storage settings?"
@@ -125,7 +137,7 @@ $Readhost = Read-Host " [Y] [N] (Default is Y)"
                 $folder = Get-Folder
                 If ($folder){$VMPath = $folder}
                 write-host -ForegroundColor Green "Virtual Machine path will be: $VMPath.`n"
-                Set-VMHost -VirtualMachinePath $vmpath
+                # Set-VMHost -VirtualMachinePath $vmpath
                }
              N {}
            }
@@ -137,7 +149,7 @@ $Readhost = Read-Host " [Y] [N] (Default is Y)"
                 $folder = Get-Folder
                 If ($folder){$HDPath = $folder}
                 write-host -ForegroundColor Green "Virtual Machine hard disk path will be: $HDPath.`n"
-                Set-VMHost -VirtualHardDiskPath $hdpath
+                # Set-VMHost -VirtualHardDiskPath $hdpath
                }
              N {}
             }
@@ -150,6 +162,33 @@ $Readhost = Read-Host " [Y] [N] (Default is Y)"
              write-host "The Hyper-V host machine will be set to store VMs at these default locations:`n" 
              write-host -ForeGroundColor Green "`tVM configuration files:`t" $vmpath"`n`n`tVM hard disk files:`t $HDpath"`n""
             }
+
+
+############################## HARD DISK CONFIGURATION ##############################
+write-host -ForegroundColor White -BackgroundColor Black "                                                                              " 
+write-host -ForegroundColor White -BackgroundColor Black "                           VM Hard Disk Options                               " 
+write-host -ForegroundColor White -BackgroundColor Black "                                                                             "`n 
+
+# Prompt for master VHDX to use for differencing disks
+write-host -ForeGroundColor Yellow "Do you have a sysprepped VHDX to use as a master for differencing disks?"
+$VHDXReadhost = Read-Host " [Y] [N] (Default is N)"  
+    Switch ($VHDXReadHost){ 
+        Y { 
+            write-host "Browse to and select your sysprepped .VHDX. This will be used as the master image for differencing disks."      
+            $vhd = get-vhdx
+            If ($vhd){
+                $vhdx = $vhd;write-host -ForegroundColor Green `n"The VM will be set to boot from: $vhdx.`n"
+                $nameEnd = get-random -Minimum 100 -Maximum 999 
+                write-host -ForegroundColor Green "A copy of "$vhdx" will be used to create the master VHDX image in the Master-"$nameEnd "directory of the VM hard disk storage location.`n"
+                $masterVHDX = $HDPath+"\" + "Master-"+$nameEnd
+                $masterSource = $vhdx          
+            }
+            Else {Write-host -ForegroundColor Green "Browse cancelled by user. Differencing disks will not be used.`n";  $vhdx = ""}	
+          }
+        N {}
+     }
+     
+     If ($VHDXReadhost -ne "y"){write-host -ForegroundColor Yellow "`n"Differencing disks will not be used."`n"}         
 
 ###################################### RAM SETTINGS ###########################################
 
@@ -212,15 +251,15 @@ $Readhost = Read-Host " [Y] [N] (Default is N)"
      { 
        Y {
         $file = Get-File
-        If ($file){$ISO = $file;write-host -ForegroundColor Green `n"This ISO will be mounted: $ISO.`n"}
-        Else {Write-Warning "Browse cancelled by user. No .ISO will be mounted.";  $ISO = "No .ISO selected."}	
+        If ($file){$ISO = $file;write-host -ForegroundColor Green `n"The VM will be set to boot from: $ISO.`n"}
+        Else {Write-host -ForegroundColor Green "`nBrowse cancelled by user. No .ISO will be mounted.";  $ISO = "No .ISO selected."}	
         }
        N {}  
      } 
      If ($readhost -ne "y"){
                             $ISO = "No .ISO selected."
                             write-host "`n"
-                            write-warning "No .ISO will be mounted!`n" 
+                            write-host -ForegroundColor Green "An .ISO will not be mounted.`n" 
                            }
 
 #################################### NAMING PREFIX ############################################
@@ -261,7 +300,8 @@ write-host -ForegroundColor White -BackgroundColor Black "                      
 write-host -ForegroundColor White -BackgroundColor Black "                                   Summary                                    " 
 write-host -ForegroundColor White -BackgroundColor Black "                                                                              " 
 write-host -ForegroundColor Cyan "`nVMs will be stored here:        "$VMPath  
-write-host -ForegroundColor Cyan "Hard disks will be stored here: "$HDPath  
+write-host -ForegroundColor Cyan "Hard disks will be stored here: "$HDPath
+If ($vhdx -ne ""){write-host -ForegroundColor Cyan "Differencing disks master at:   "$masterVHDX}  
 write-host -ForegroundColor Cyan "VMs will have this much RAM:    "$RAM"GB"
 write-host -ForegroundColor Cyan "Network switch to use:          "$VMSwitch
 write-host -ForegroundColor Cyan "This .ISO will be mounted:      "$ISO
@@ -270,32 +310,93 @@ write-host -ForegroundColor Cyan "Number of VMs to create:        "$VMnumber
 
 Write-host -ForeGroundColor Cyan "`n`nTo modify the default values used by the script, edit the default parameter`nsettings at the top of the script. If you installed the script using the `nInstall-Script Create-TestVMs PowerShell command, the script can be found at `n$env:ProgramFiles\WindowsPowerShell\Scripts.`n"
 
-Write-Host -ForegroundColor Yellow "Press enter to begin creating VMs."
 pause
 
 ######################################## CREATE VMs ###########################################
 
-for ($i=1; $i -le $VMnumber; $i++)
-{
-    $VMSuffix = get-random -minimum 100 -maximum 999
-    $VMname = $VMPrefix + "-" + $VMSuffix
-    New-VM -Name $VMname -Path $VMpath -SwitchName $VMSwitch -Generation 2 -NewVHDPath "$HDPath\$vmname.vhdx" -NewVHDSizeBytes 127GB -MemoryStartupBytes $RAMAssigned
-    If ($ISO -ne "No .ISO selected."){Add-VMDvdDrive -VMName $VMname -Path $ISO}
-    $bootorder = (Get-VMFirmware -VMName $vmname).bootorder | Sort-Object -Property Device
-    Get-VM -VMName $VMname | Set-VMFirmware -BootOrder $bootorder
-    Set-VMKeyProtector -VMName $VMName -NewLocalKeyProtector
-    Enable-VMTPM -VMName $VMName
-    Set-VM -Name $VMName -ProcessorCount 4 -SmartPagingFilePath $HDPath -AutomaticStartAction StartIfRunning -DynamicMemory 
-    Start-VM $VMname
-    # Add VM SN# to Hyper-V VM notes to make it easier to find for Autopilot maintenance.
-    Get-WmiObject -ComputerName . -Namespace root\virtualization\v2 -class Msvm_VirtualSystemSettingData `
-     | ? { $_.VirtualSystemType -eq ‘Microsoft:Hyper-V:System:Realized’} | select elementname, BIOSSerialNumber `
-     | Sort elementName | % { Set-VM -ComputerName . -Name $VMname -Notes $_.BIOSSerialNumber }
-    write-host -ForegroundColor Cyan "Created $vmname!"
-    write-host "Added SN# to Hyper-V VM Setting notes.`n"
+# If alternate VM storage paths were provided, update them now:
+Set-VMHost -VirtualMachinePath $vmpath
+Set-VMHost -VirtualHardDiskPath $hdpath
+            
+
+If($vhdx -ne "")
+    {
+        $masterVHDX = $HDPath+"\Master-"+$nameEnd+"\"
+        # Create master directory
+        new-item $masterVHDX -ItemType Directory
+        # Copy master VHDX into master directory
+        write-host "`nCopying"$vhdx" to "$masterVHDX" ...`n"
+        Copy-Item -Path $vhdx -Destination $masterVHDX
+        #Set the parent VHDX as Read-Only
+        Set-ItemProperty -Path $masterVHDX"\*.vhdx" -Name IsReadOnly -Value $true
+        Add-Content $masterVHDX"ReadMe.txt" "These VMs are using differencing disks based on this master disk:"
+              
+    for ($i=1; $i -le $VMnumber; $i++)
+        {
+        $VMSuffix = get-random -minimum 100 -maximum 999
+        $VMname = $VMPrefix + "-" + $VMSuffix
+        # Create differencing disk in HD location
+        $masterVhdxName = Get-ChildItem $masterVHDX*.vhdx | Select-Object -ExpandProperty Name
+        write-host "Creating differencing disk for"$VMName" ...`n"
+        $parentPath = $masterVHDX+$masterVhdxName  
+        $vhdPath = $HDPath + "\" + $vmname + "\" + $vmname + ".vhdx"
+        $vhdxDiff = New-VHD -Path $vhdPath -ParentPath $parentPath -Differencing
+        
+        new-vm -Name $VMName -Path $VMPath"\" -SwitchName $VMSwitch -Generation 2 -VHDPath $vhdPath -BootDevice VHD -MemoryStartupBytes $RAMAssigned   #-NewVHDSizeBytes 127GB
+    
+        If ($ISO -ne "No .ISO selected."){
+            Add-VMDvdDrive -VMName $VMname -Path $ISO
+            $bootorder = (Get-VMFirmware -VMName $vmname).bootorder | Sort-Object -Property Device
+            Get-VM -VMName $VMname | Set-VMFirmware -BootOrder $bootorder}
+        Set-VMKeyProtector -VMName $VMName -NewLocalKeyProtector
+        Enable-VMTPM -VMName $VMName
+        Set-VM -Name $VMName -ProcessorCount 4 -SmartPagingFilePath $HDPath -AutomaticStartAction StartIfRunning -DynamicMemory 
+        
+        # Add VM SN# to Hyper-V VM notes to make it easier to find for Autopilot maintenance.
+        $sn = Get-WmiObject -ComputerName . -Namespace root\virtualization\v2 -class Msvm_VirtualSystemSettingData `
+            | ? {$_.elementName -eq $VMName} `
+            | Select -ExpandProperty BIOSSerialNumber        
+        $vm = Get-VM -Name $VMName
+        Set-VM -VM $vm -Notes "$($vm.Notes) VM serial number is: $sn." -Confirm:$false
+        
+        # Add master disk location used by differencing disk to VM notes
+        Set-VM -VM $vm -Notes "$($vm.Notes) `n`nThis VM is using differencing disks. Its master disk is located at $masterVHDX." -Confirm:$false
+
+        #Checkpoint the VM at pre-out of box experience state.
+        write-host "Creating OOBE checkpoint"
+        Get-VM $VMName -ComputerName . | checkpoint-vm -SnapshotName "OOBE"
+        write-host "Starting "$VMName`n
+        Start-VM $VMname
+        Add-Content $masterVHDX"ReadMe.txt" $VMname     
+        }        
+    } 
+Else{
+    for ($i=1; $i -le $VMnumber; $i++)
+        {
+        $VMSuffix = get-random -minimum 100 -maximum 999
+        $VMname = $VMPrefix + "-" + $VMSuffix
+        New-VM -Name $VMname -Path $VMpath -SwitchName $VMSwitch -Generation 2 -NewVHDSizeBytes 127GB -NewVHDPath "$HDPath\$vmname.vhdx" -MemoryStartupBytes $RAMAssigned
+    
+    
+        If ($ISO -ne "No .ISO selected."){
+            Add-VMDvdDrive -VMName $VMname -Path $ISO
+            $bootorder = (Get-VMFirmware -VMName $vmname).bootorder | Sort-Object -Property Device
+            Get-VM -VMName $VMname | Set-VMFirmware -BootOrder $bootorder}
+        Set-VMKeyProtector -VMName $VMName -NewLocalKeyProtector
+        Enable-VMTPM -VMName $VMName
+        Set-VM -Name $VMName -ProcessorCount 4 -SmartPagingFilePath $HDPath -AutomaticStartAction StartIfRunning -DynamicMemory 
+
+        # Add VM SN# to Hyper-V VM notes to make it easier to find for Autopilot maintenance.
+        Get-WmiObject -ComputerName . -Namespace root\virtualization\v2 -class Msvm_VirtualSystemSettingData `
+         | ? { $_.VirtualSystemType -eq ‘Microsoft:Hyper-V:System:Realized’} | select elementname, BIOSSerialNumber `
+         | Sort elementName | % { Set-VM -ComputerName . -Name $VMname -Notes $_.BIOSSerialNumber }
+                 
+        }        
+        write-host -ForegroundColor Cyan "Created $vmname!"
+        Start-VM $VMname
+        start-sleep 1
     }
-
-write-host -ForegroundColor Green "Complete!`n"
-write-host -ForegroundColor Cyan "`VM creation summary:`n"
-
+    
+    write-host -ForegroundColor Green "`n`nComplete!`n"
+    
 exit

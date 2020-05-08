@@ -1,4 +1,10 @@
-Configured script to use/set the default hyper-v VM storage locations.
+Configured script to use/set the default hyper-v VM storage locations instead of resetting to Hyper-V defaults.
+
 Changed PowerShell console title to reflect version of script being run.
 
-does the script change the hyper-v locations before the pause to execute?
+Added differencing disk capabilities. When differencing disks are used:
+	The location for the differencing disk's master disk is added to the VM notes. 
+	A readme file is also created with the master disk listing VMs who have differencing disks based on the master disk. 
+	An OOBE snapshot is taken before the VM is started the first time. 
+
+
