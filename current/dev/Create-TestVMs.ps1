@@ -30,7 +30,7 @@ Version 1.0: Original published version.
 Version 1.1: Minor bug fixes.
 Version 1.2: Minor bug fixes.
 Version 1.3: Minor bug fixes.
-Version 2.0: Configured script to use/set the default Hyper-V VM storage locations.
+Version 2.0: Added capability to accept or change Hyper-V host save locations. Added version to PowerShell console title. Added differencing disk support with an OOBE snapshot.
  
 .DESCRIPTION 
  Script to automate the creation of test Hyper-V VMs. 
@@ -137,7 +137,6 @@ $Readhost = Read-Host " [Y] [N] (Default is Y)"
                 $folder = Get-Folder
                 If ($folder){$VMPath = $folder}
                 write-host -ForegroundColor Green "Virtual Machine path will be: $VMPath.`n"
-                # Set-VMHost -VirtualMachinePath $vmpath
                }
              N {}
            }
@@ -149,7 +148,6 @@ $Readhost = Read-Host " [Y] [N] (Default is Y)"
                 $folder = Get-Folder
                 If ($folder){$HDPath = $folder}
                 write-host -ForegroundColor Green "Virtual Machine hard disk path will be: $HDPath.`n"
-                # Set-VMHost -VirtualHardDiskPath $hdpath
                }
              N {}
             }
