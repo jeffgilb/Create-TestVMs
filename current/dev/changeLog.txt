@@ -8,3 +8,5 @@ Added differencing disk capabilities. When differencing disks are used:
 	An OOBE snapshot is taken before the VM is started the first time. 
 
 
+put in summary go/no-go decision
+put in network configuration selector
