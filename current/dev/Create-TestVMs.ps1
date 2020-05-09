@@ -30,7 +30,7 @@ Version 1.0: Original published version.
 Version 1.1: Minor bug fixes.
 Version 1.2: Minor bug fixes.
 Version 1.3: Minor bug fixes.
-Version 2.0: Added capability to accept or change Hyper-V host save locations. Added version to PowerShell console title. Added differencing disk support with an OOBE snapshot.
+Version 2.0: Added capability to accept or change Hyper-V host save locations. Added version to PowerShell console title. Added differencing disk support and an OOBE snapshot while turned off.
  
 .DESCRIPTION 
  Script to automate the creation of test Hyper-V VMs. 
@@ -323,8 +323,9 @@ If($vhdx -ne "")
         # Create master directory
         new-item $masterVHDX -ItemType Directory
         # Copy master VHDX into master directory
-        write-host "`nCopying"$vhdx" to "$masterVHDX" ...`n"
-        Copy-Item -Path $vhdx -Destination $masterVHDX
+        write-host "Copying master hard disk file...`n"
+        # Copy-Item -Path $vhdx -Destination $masterVHDX
+        Start-BitsTransfer -Source $vhdx -Destination $masterVHDX -Description "Copying $vhdx to $masterVHDX" -DisplayName "Copying master hard disk file."
         #Set the parent VHDX as Read-Only
         Set-ItemProperty -Path $masterVHDX"\*.vhdx" -Name IsReadOnly -Value $true
         Add-Content $masterVHDX"ReadMe.txt" "These VMs are using differencing disks based on this master disk:"
@@ -335,7 +336,7 @@ If($vhdx -ne "")
         $VMname = $VMPrefix + "-" + $VMSuffix
         # Create differencing disk in HD location
         $masterVhdxName = Get-ChildItem $masterVHDX*.vhdx | Select-Object -ExpandProperty Name
-        write-host "Creating differencing disk for"$VMName" ...`n"
+        write-host "Creating differencing disk for"$VMName"...`n"
         $parentPath = $masterVHDX+$masterVhdxName  
         $vhdPath = $HDPath + "\" + $vmname + "\" + $vmname + ".vhdx"
         $vhdxDiff = New-VHD -Path $vhdPath -ParentPath $parentPath -Differencing
