@@ -508,9 +508,11 @@ Else{
         Set-VM -Name $VMName -ProcessorCount 4 -SmartPagingFilePath $HDPath -AutomaticStartAction StartIfRunning -DynamicMemory 
 
         # Add VM SN# to Hyper-V VM notes to make it easier to find for Autopilot maintenance.
-        Get-WmiObject -ComputerName . -Namespace root\virtualization\v2 -class Msvm_VirtualSystemSettingData `
-         | ? { $_.VirtualSystemType -eq ‘Microsoft:Hyper-V:System:Realized’} | select elementname, BIOSSerialNumber `
-         | Sort elementName | % { Set-VM -ComputerName . -Name $VMname -Notes $_.BIOSSerialNumber }
+        $sn = Get-WmiObject -ComputerName . -Namespace root\virtualization\v2 -class Msvm_VirtualSystemSettingData `
+            | ? {$_.elementName -eq $VMName} `
+            | Select -ExpandProperty BIOSSerialNumber        
+        $vm = Get-VM -Name $VMName
+        Set-VM -VM $vm -Notes "$($vm.Notes) VM serial number is: $sn." -Confirm:$false
                  
         }        
         write-host -ForegroundColor Cyan "Created $vmname!"
