@@ -1,7 +1,7 @@
 
 <#PSScriptInfo
 
-.VERSION 2.1
+.VERSION 2.0
 
 .GUID f35cd072-b739-4542-8fbf-3976b8daa444
 
@@ -30,18 +30,18 @@ Version 1.0: Original published version.
 Version 1.1: Minor bug fixes.
 Version 1.2: Minor bug fixes.
 Version 1.3: Minor bug fixes.
-Version 2.0: Added version to PowerShell console title.
-             Added capability to accept or change Hyper-V host save locations. 
-             Set file and folder browse dialogs to always open on top.
-             Added final summary confirmation prompt before creating VMs with options to exit.
-             Added a virtual network configuration selector dialog. No virtual network selected by default.
-             Added differencing disk support:
-             - Allows selection of a master (sysprepped) VHDX to be used as the master disk for new VMs
-             - Creates an OOBE snapshot while turned off for VMs using differencing disks
-             - Creates a master directory with a copy of the selected VHDX.
-             - Creates a readme file in the master disk directory listing VMs using the master disk
-             - Puts the master VHDX and SN in the VM notes in Hyper-V
-Version 2.1: Bug fix to address concatonating paths and virtual network names.
+Version 2.0: 
+             • Added version to PowerShell console title.
+             • Added capability to accept or change Hyper-V host save locations. 
+             • Set file and folder browse dialogs to always open on top.
+             • Added final summary confirmation prompt before creating VMs with options to exit.
+             • Added a virtual network configuration selector dialog. No virtual network selected by default.
+             • Added differencing disk support:
+                 • Allows selection of a master (sysprepped) VHDX to be used as the master disk for new VMs
+                 • Creates an OOBE snapshot while turned off for VMs using differencing disks
+                 • Creates a master directory with a copy of the selected VHDX.
+                 • Creates a readme file in the master disk directory listing VMs using the master disk
+                 • Puts the master VHDX and SN in the VM notes in Hyper-V
   
 .DESCRIPTION 
  Script to automate the creation of test Hyper-V VMs. 
@@ -143,15 +143,16 @@ write-host "                          Virtual Machine Storage Locations         
 
 $vmpath = ""
 $vmpath = get-vmhost | Select-Object -Property VirtualMachinePath
-$vmpath = """?($vmpath)"""
-$vmpath = $vmpath.remove(0,24)
-$vmpath = $vmpath.trimStart("=")
-$vmpath = $vmpath.trimend("\})""")
+$path = """?($vmpath)"""
+$path = $path.trimStart("""?(@{VirtualMachinePath")
+$path2 = $path.trimStart("=")
+$path3 = $path2.trimend("\})""")
+$vmpath = $path3
 
 $hdpath = ""
 $hdpath = get-vmhost | Select-Object -Property VirtualHardDiskPath 
 $hdpath = """?($hdpath)"""
-$hdpath = $hdpath.remove(0,24)
+$hdpath = $hdpath.trimStart("""?(@{VirtualHardDiskPath")
 $hdpath = $hdpath.trimStart("=")
 $hdpath = $hdpath.trimend("\})""")
 
@@ -509,7 +510,7 @@ Else{
 
         # Add VM SN# to Hyper-V VM notes to make it easier to find for Autopilot maintenance.
         Get-WmiObject -ComputerName . -Namespace root\virtualization\v2 -class Msvm_VirtualSystemSettingData `
-         | ? { $_.VirtualSystemType -eq �Microsoft:Hyper-V:System:Realized�} | select elementname, BIOSSerialNumber `
+         | ? { $_.VirtualSystemType -eq ‘Microsoft:Hyper-V:System:Realized’} | select elementname, BIOSSerialNumber `
          | Sort elementName | % { Set-VM -ComputerName . -Name $VMname -Notes $_.BIOSSerialNumber }
                  
         }        
