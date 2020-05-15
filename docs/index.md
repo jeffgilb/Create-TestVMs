@@ -18,15 +18,15 @@ When creating VMs, you can create each with their own full VHDX file and boot fr
 
 Here's what it looks like to build 5 VMs using differencing disks in about 2:30:
 
-[![Create-TestVMs](.\create-testvms.PNG)](.\5VMsDifferencingDisks.mp4 "5 VMs at OOBE in less than three minutes")
+[![Create-TestVMs](http://img.youtube.com/vi/asHMQyyPPNc/0.jpg)](https://youtu.be/asHMQyyPPNc "5 VMs at OOBE in less than three minutes")
 
 Individual VMs booting from an ISO is even faster. About a minute:
 
-[![Create-TestVMs](.\create-testvms.PNG)](5VMsISO.mp4 "5 VMs from ISO in 1 minute")
+[![Create-TestVMs](http://img.youtube.com/vi/KI4-azqK4hY/0.jpg)](https://youtu.be/KI4-azqK4hY "5 VMs from ISO in 1 minute")
 
 Feedback or suggestions for improvements? Find me on Twitter [@jeffgilb](https://twitter.com/jeffgilb). 
 
-## The current version of the script is 1.3.
+## The current version of the script is 2.3.
 Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/Create-TestVMs/1.3) by running the *Install-Script Create-TestVMs* command.
 
 # Release notes
@@ -49,7 +49,23 @@ Get it from the [PowerShell Gallery](https://www.powershellgallery.com/packages/
   <summary>Version 2</summary>
 
 <dl>
-  <dt>In development:</dt>
-  <dd>• Version displayed in PowerShell console title<br>• Ability to use and set the Hyper-V host's default VM storage settings instead of Hyper-V defaults<br>• Ability to use custom VHDX files with differencing disks<br>• Ability create VMs without a network connection</dd>
+  <dt>Version 2.0</dt>
+  <dd>Added version to PowerShell console title.
+             Added capability to accept or change Hyper-V host save locations.<br> 
+             Set file and folder browse dialogs to always open on top.<br>
+             Added final summary confirmation prompt before creating VMs with options to exit.<br>
+             Added a virtual network configuration selector dialog. No virtual network selected by default.<br>
+             Added differencing disk support:<br>
+             - Allows selection of a master (sysprepped) VHDX to be used as the master disk for new VMs<br>
+             - Creates an OOBE snapshot while turned off for VMs using differencing disks<br>
+             - Creates a master directory with a copy of the selected VHDX.<br>
+             - Creates a readme file in the master disk directory listing VMs using the master disk<br>
+             - Puts the master VHDX and SN in the VM notes in Hyper-V</dd>
+<dt>Version 2.1</dt>
+<dd>Bug fix to address concatonating paths and virtual network names.</dd>
+<dt>Version 2.2</dt>
+<dd>Fixed network switch assignment issue.</dd>
+<dt>Version 2.2</dt>
+<dd>Fixed location for non-differencing disk hard disk files to be stored.</dd>
 </dl>
 </details>
