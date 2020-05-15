@@ -1,7 +1,7 @@
 
 <#PSScriptInfo
 
-.VERSION 2.2
+.VERSION 2.3
 
 .GUID f35cd072-b739-4542-8fbf-3976b8daa444
 
@@ -43,6 +43,7 @@ Version 2.0: Added version to PowerShell console title.
              - Puts the master VHDX and SN in the VM notes in Hyper-V
 Version 2.1: Bug fix to address concatonating paths and virtual network names.
 Version 2.2: Fixed network switch assignment issue.
+Version 2.2: Fixed location for non-differencing disk hard disk files to be stored.
   
 .DESCRIPTION 
  Script to automate the creation of test Hyper-V VMs. 
@@ -131,7 +132,7 @@ Function Get-VHDX
     return $vhdx
 }
 
-$Version = "Create-TestVMs v2.0"
+$Version = "Create-TestVMs v2.3"
 $host.ui.RawUI.WindowTitle = $Version
 
 #endregion ********************************************************************************************
@@ -486,13 +487,14 @@ Else{
         {
         $VMSuffix = get-random -minimum 100 -maximum 999
         $VMname = $VMPrefix + "-" + $VMSuffix
-        
+        $vhdPath = $HDPath + "\" + $vmname + "\" + $vmname + ".vhdx"
+
         # Create VM, but first check for network switch
         If ($VMSwitch -ne "No virtual switch selected."){
-            New-VM -Name $VMname -Path $VMpath -Generation 2 -NewVHDSizeBytes 127GB -NewVHDPath "$HDPath\$vmname.vhdx" -MemoryStartupBytes $RAMAssigned -SwitchName $VMSwitch
+            New-VM -Name $VMname -Path $VMpath -Generation 2 -NewVHDSizeBytes 127GB -NewVHDPath $vhdPath -MemoryStartupBytes $RAMAssigned -SwitchName $VMSwitch
         }
         Else{   
-            New-VM -Name $VMname -Path $VMpath -Generation 2 -NewVHDSizeBytes 127GB -NewVHDPath "$HDPath\$vmname.vhdx" -MemoryStartupBytes $RAMAssigned     
+            New-VM -Name $VMname -Path $VMpath -Generation 2 -NewVHDSizeBytes 127GB -NewVHDPath $vhdPath -MemoryStartupBytes $RAMAssigned     
             }  
                  
         # Adding an ISO to the VM?
